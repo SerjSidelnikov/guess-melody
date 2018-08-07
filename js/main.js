@@ -14,7 +14,7 @@ const showScreen = (element) => {
 
 let current = 0;
 /**
- * Функция выбора слайда
+ * Функция выбора экрана
  * @param {Number} index
  */
 const selectScreen = (index) => {
