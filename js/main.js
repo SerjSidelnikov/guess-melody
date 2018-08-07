@@ -62,5 +62,17 @@ document.addEventListener(`keydown`, (evt) => {
   }
 });
 
+const buttons = document.querySelectorAll(`.arrows__btn`);
+
+// Вешаем обработчик на переключение на предыдущий экран
+buttons[0].addEventListener(`click`, () => {
+  selectScreen(current - 1);
+});
+
+// Вешаем обработчик на переключение на следующий экран
+buttons[1].addEventListener(`click`, () => {
+  selectScreen(current + 1);
+});
+
 // Показываем приветственный экран
 selectScreen(current);
