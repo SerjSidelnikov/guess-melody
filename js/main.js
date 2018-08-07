@@ -1,5 +1,8 @@
 'use strict';
 
+const LEFT_ARROW = 37;
+const RIGHT_ARROW = 39;
+
 const mainElement = document.querySelector(`.main`);
 const screens = Array.from(document.querySelectorAll(`template`)).map((it) => it.content);
 
@@ -24,3 +27,17 @@ const selectScreen = (index) => {
   showScreen(screens[current]);
 };
 
+// Вешаем обработчик на нажатие стрелки влево или вправо для переключения экранов
+document.addEventListener(`keydown`, (evt) => {
+  switch (evt.keyCode) {
+    case RIGHT_ARROW:
+      selectScreen(current + 1);
+      break;
+    case LEFT_ARROW:
+      selectScreen(current - 1);
+      break;
+  }
+});
+
+// Показываем приветственный экран
+selectScreen(current);
