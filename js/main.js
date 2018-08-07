@@ -6,6 +6,29 @@ const RIGHT_ARROW = 39;
 const mainElement = document.querySelector(`.main`);
 const screens = Array.from(document.querySelectorAll(`template`)).map((it) => it.content);
 
+const buttonsContent = `
+<style>
+  .arrows__wrap {
+    position: absolute;
+    top: 135px;
+    left: 50%;
+    margin-left: -56px;
+  }
+  .arrows__btn {
+    background: none;
+    border: 2px solid black;
+    padding: 5px 20px;
+  }
+</style>
+<button class="arrows__btn"><-</button>
+<button class="arrows__btn">-></button>`.trim();
+
+const buttonsTemplate = document.createElement(`div`);
+buttonsTemplate.classList.add(`arrows__wrap`);
+buttonsTemplate.innerHTML = buttonsContent;
+
+document.querySelector(`.app`).appendChild(buttonsTemplate);
+
 /**
  * Отображает экран по переданному номеру
  * @param {Number} element
