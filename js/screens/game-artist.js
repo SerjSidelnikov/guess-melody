@@ -1,4 +1,8 @@
-import {getElementFromTemplate} from '../util';
+import {getElementFromTemplate, showScreen} from '../util';
+import resultSuccessScreen from './result-success';
+import failTimeScreen from './fail-time';
+import failTries from './fail-tries';
+import welcomeScreen from './welcome';
 
 const template = `
 <section class="game game--artist">
@@ -61,5 +65,25 @@ const template = `
 </section>`;
 
 const element = getElementFromTemplate(template);
+const buttonRestart = element.querySelector(`.game__back`);
+const form = element.querySelector(`.game__artist`);
+const answers = form.elements.answer;
+
+// Определяем случайным образом результирующий экран
+let resultScreens = [resultSuccessScreen, failTimeScreen, failTries];
+let randomResultScreen = () => resultScreens[Math.floor(Math.random() * resultScreens.length)];
+
+// Вешаем на кнопки ответов события на переход к случайному экрану
+[...answers].forEach((it) => {
+  it.addEventListener(`click`, (event) => {
+    event.preventDefault();
+
+    form.reset();
+    showScreen(randomResultScreen());
+  });
+});
+
+// Вешаем на кнопку событие на переход к начальному экрану
+buttonRestart.addEventListener(`click`, () => showScreen(welcomeScreen));
 
 export default element;

@@ -1,4 +1,5 @@
-import {getElementFromTemplate} from '../util';
+import {getElementFromTemplate, showScreen} from '../util';
+import welcomeScreen from './welcome';
 
 const template = `
 <section class="result">
@@ -10,5 +11,12 @@ const template = `
 </section>`;
 
 const element = getElementFromTemplate(template);
+
+// Вешаем на кнопку "Попробовать ещё раз" событие на переход к приветственному экрану
+element.querySelector(`.result__replay`).addEventListener(`click`, (event) => {
+  event.preventDefault();
+
+  showScreen(welcomeScreen);
+});
 
 export default element;

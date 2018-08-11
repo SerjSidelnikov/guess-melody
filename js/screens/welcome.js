@@ -1,4 +1,5 @@
-import {getElementFromTemplate} from '../util';
+import {getElementFromTemplate, showScreen} from '../util';
+import genreScreen from './game-genre';
 
 const template = `
 <section class="welcome">
@@ -14,5 +15,10 @@ const template = `
 </section>`;
 
 const element = getElementFromTemplate(template);
+
+const buttonPlay = element.querySelector(`.welcome__button`);
+
+// Вешаем на кнопку событие на переход к следующему экрану
+buttonPlay.addEventListener(`click`, () => showScreen(genreScreen));
 
 export default element;

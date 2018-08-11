@@ -1,4 +1,6 @@
-import {getElementFromTemplate} from '../util';
+import {getElementFromTemplate, showScreen} from '../util';
+import artistScreen from './game-artist';
+import welcomeScreen from './welcome';
 
 const template = `
 <section class="game game--genre">
@@ -73,11 +75,35 @@ const template = `
         </div>
       </div>
 
-      <button class="game__submit button" type="submit">Ответить</button>
+      <button class="game__submit button" type="submit" disabled>Ответить</button>
     </form>
   </section>
 </section>`;
 
 const element = getElementFromTemplate(template);
+const button = element.querySelector(`.game__submit`);
+const buttonRestart = element.querySelector(`.game__back`);
+const form = element.querySelector(`.game__tracks`);
+const answers = form.elements.answer;
+
+// Проверяем на наличие активного ответа и убираем у кнопки атрибут disabled
+[...answers].forEach((item) => {
+  item.addEventListener(`change`, () => {
+    button.disabled = !([...answers].some((it) => it.checked));
+  });
+});
+
+// Вешаем на кнопку событие на переход к следующему экрану и сбрасываем форму
+button.addEventListener(`click`, (event) => {
+  event.preventDefault();
+
+  showScreen(artistScreen);
+
+  form.reset();
+  button.disabled = true;
+});
+
+// Вешаем на кнопку событие на переход к начальному экрану
+buttonRestart.addEventListener(`click`, () => showScreen(welcomeScreen));
 
 export default element;
