@@ -1,16 +1,21 @@
-import {GAME, INITIAL_GAME, die} from '../data/game-data';
+import {GAME, INITIAL_GAME, die, user, statistics} from '../data/game-data';
 import {getElementFromTemplate, showScreen} from '../util';
+import {countPoints} from '../data/count-points';
+import {resultGame} from '../data/result-game';
 import genreScreen from './game-genre';
 import welcomeScreen from './welcome';
 import failTries from './fail-tries';
 import header from './header';
 import artistScreen from './game-artist';
 import modalReset from './modal-confirm';
+import resultScreen from './result-success';
 
+const BASE_TIME = 35;
 let game;
 
 const resetGame = () => {
   game = Object.assign({}, INITIAL_GAME);
+  user.clear();
 };
 
 const startGame = () => {
@@ -29,22 +34,22 @@ const startGame = () => {
   gameGenre.appendChild(modalReset);
   showScreen(gameGenre);
 
-  const buttonResetGame = gameGenre.querySelector(`.game__back`);
-  buttonResetGame.addEventListener(`click`, (event) => {
-    event.preventDefault();
-    modalReset.firstElementChild.classList.remove(`modal--hidden`);
-  });
-
-  modalReset.querySelector(`#ok`).addEventListener(`click`, (event) => {
-    event.preventDefault();
-    resetGame();
-    showScreen(welcomeScreen);
-    modalReset.firstElementChild.classList.add(`modal--hidden`);
-  });
-
   let gameArtist;
 
   const actionGameGenre = () => {
+    const buttonResetGame = gameGenre.querySelector(`.game__back`);
+    buttonResetGame.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      modalReset.firstElementChild.classList.remove(`modal--hidden`);
+    });
+
+    modalReset.querySelector(`#ok`).addEventListener(`click`, (event) => {
+      event.preventDefault();
+      resetGame();
+      showScreen(welcomeScreen);
+      modalReset.firstElementChild.classList.add(`modal--hidden`);
+    });
+
     const button = gameGenre.querySelector(`.game__submit`);
     const form = gameGenre.querySelector(`.game__tracks`);
     const answers = [...form.elements.answer];
@@ -84,20 +89,21 @@ const startGame = () => {
       event.preventDefault();
 
       const userAnswers = answers.filter((it) => it.checked);
+      const result = userAnswers.some((it) => it.value !== GAME[game.level].answer);
 
-      for (const answer of userAnswers) {
-        if (answer.value !== GAME[game.level].answer) {
-          try {
-            game = die(game);
-            updateGame(game, gameGenre);
-            form.reset();
-            button.disabled = true;
-            return;
-          } catch (e) {
-            showScreen(failTries);
-            return;
-          }
+      if (result) {
+        try {
+          game = die(game);
+          user.add({result: false, time: BASE_TIME});
+          updateGame(game, gameGenre);
+          form.reset();
+          button.disabled = true;
+        } catch (e) {
+          showScreen(failTries);
+          return;
         }
+      } else {
+        user.add({result: true, time: BASE_TIME});
       }
 
       gameArtist = getElementFromTemplate(artistScreen(GAME[++game.level], game));
@@ -114,6 +120,19 @@ const startGame = () => {
   actionGameGenre();
 
   const actionGameArtist = () => {
+    const buttonResetGame = gameArtist.querySelector(`.game__back`);
+    buttonResetGame.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      modalReset.firstElementChild.classList.remove(`modal--hidden`);
+    });
+
+    modalReset.querySelector(`#ok`).addEventListener(`click`, (event) => {
+      event.preventDefault();
+      resetGame();
+      showScreen(welcomeScreen);
+      modalReset.firstElementChild.classList.add(`modal--hidden`);
+    });
+
     const form = gameArtist.querySelector(`.game__artist`);
     const answers = [...form.elements.answer];
     const btnPlayMusic = gameArtist.querySelector(`.track__button`);
@@ -137,18 +156,38 @@ const startGame = () => {
             game = die(game);
             updateGame(game, gameArtist);
             form.reset();
-            return;
+            user.add({result: false, time: BASE_TIME});
           } catch (e) {
             showScreen(failTries);
             return;
           }
+        } else {
+          user.add({result: true, time: BASE_TIME});
         }
 
-        gameGenre = getElementFromTemplate(genreScreen(GAME[++game.level], game));
-        gameGenre.firstElementChild.insertBefore(headerTemplate, gameGenre.firstElementChild.firstElementChild);
-        gameGenre.appendChild(modalReset);
-        showScreen(gameGenre);
-        actionGameGenre();
+        if (GAME[++game.level]) {
+          gameGenre = getElementFromTemplate(genreScreen(GAME[game.level], game));
+          gameGenre.firstElementChild.insertBefore(headerTemplate, gameGenre.firstElementChild.firstElementChild);
+          gameGenre.appendChild(modalReset);
+          showScreen(gameGenre);
+          actionGameGenre();
+        } else {
+          const resultUserGame = {
+            score: countPoints([...user], game.lives),
+            lives: game.lives,
+            time: BASE_TIME,
+          };
+
+          const resultTemplate = getElementFromTemplate(resultScreen(resultUserGame.score, resultGame(statistics, resultUserGame), game));
+
+          resultTemplate.querySelector(`.result__replay`).addEventListener(`click`, (event) => {
+            event.preventDefault();
+            resetGame();
+            startGame();
+          });
+
+          showScreen(resultTemplate);
+        }
 
         form.reset();
       });

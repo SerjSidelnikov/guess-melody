@@ -1,5 +1,5 @@
-import {getElementFromTemplate, showScreen} from '../util';
-import welcomeScreen from './welcome';
+import {getElementFromTemplate} from '../util';
+import startGame from './game';
 
 const template = `
 <section class="result">
@@ -15,7 +15,7 @@ const element = getElementFromTemplate(template);
 element.querySelector(`.result__replay`).addEventListener(`click`, (event) => {
   event.preventDefault();
 
-  showScreen(welcomeScreen);
+  startGame();
 });
 
 export default element;
