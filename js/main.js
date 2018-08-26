@@ -1,4 +1,4 @@
 import {showScreen} from './util';
-import welcomeScreen from './screens/welcome';
+import welcomeScreen from './game/welcome';
 
 showScreen(welcomeScreen);

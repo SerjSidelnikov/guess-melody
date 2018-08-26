@@ -4,18 +4,18 @@
  * @return {HTMLElement}
  */
 export const getElementFromTemplate = (template) => {
-  const wrapper = document.createElement(`section`);
-  wrapper.className = `main`;
+  const wrapper = document.createElement(`div`);
   wrapper.innerHTML = template;
   return wrapper;
 };
 
-const mainElement = document.querySelector(`.app`);
+const mainElement = document.querySelector(`.main`);
 
 /**
  * Отображает экран переданного элемента
  * @param {HTMLElement} element
  */
 export const showScreen = (element) => {
-  mainElement.replaceChild(element, mainElement.firstElementChild);
+  mainElement.innerHTML = ``;
+  mainElement.appendChild(element);
 };
