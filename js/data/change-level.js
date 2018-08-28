@@ -17,9 +17,7 @@ export const changeLevel = (game, level) => {
     throw new Error(`The game has a maximum of 10 levels`);
   }
 
-  const newGame = Object.assign({}, game, {
+  return Object.assign({}, game, {
     level
   });
-
-  return newGame;
 };
