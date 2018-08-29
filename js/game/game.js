@@ -66,10 +66,10 @@ const startGame = () => {
           btn.classList.remove(`track__button--pause`);
           musics[index].pause();
         } else {
-          for (let i = 0; i < buttonsPlayMusic.length; i++) {
-            buttonsPlayMusic[i].classList.remove(`track__button--pause`);
+          buttonsPlayMusic.forEach((it, i) => {
+            it.classList.remove(`track__button--pause`);
             musics[i].pause();
-          }
+          });
 
           btn.classList.add(`track__button--pause`);
           musics[index].play();
@@ -89,9 +89,9 @@ const startGame = () => {
       event.preventDefault();
 
       const userAnswers = answers.filter((it) => it.checked);
-      const result = userAnswers.some((it) => it.value !== GAME[game.level].answer);
+      const answerIsCorrect = userAnswers.some((it) => it.value !== GAME[game.level].answer);
 
-      if (result) {
+      if (answerIsCorrect) {
         try {
           game = die(game);
           user.add({result: false, time: BASE_TIME});
