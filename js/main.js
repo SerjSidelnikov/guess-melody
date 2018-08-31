@@ -1,4 +1,11 @@
 import {showScreen} from './util';
-import welcomeScreen from './game/welcome';
+import WelcomeView from './game/welcome-view';
+import startGame from './game/game';
 
-showScreen(welcomeScreen);
+const welcomeScreen = new WelcomeView();
+
+showScreen(welcomeScreen.element);
+
+welcomeScreen.play = () => {
+  startGame();
+};
