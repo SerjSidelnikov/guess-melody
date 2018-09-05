@@ -1,11 +1,12 @@
 import AbstractView from '../abstract-view';
+import Application from '../application';
 
 export default class FailTimeView extends AbstractView {
   constructor() {
     super();
   }
 
-  get element() {
+  get template() {
     return `
       <section class="result">
         <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
@@ -18,11 +19,7 @@ export default class FailTimeView extends AbstractView {
   bind() {
     this.element.querySelector(`.result__replay`).addEventListener(`click`, (event) => {
       event.preventDefault();
-      this.restart();
+      Application.showGame();
     });
-  }
-
-  restart() {
-    //
   }
 }

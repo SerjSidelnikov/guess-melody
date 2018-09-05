@@ -1,4 +1,5 @@
 import AbstractView from '../abstract-view';
+import Application from '../application';
 
 export default class FailTriesView extends AbstractView {
   constructor() {
@@ -18,11 +19,7 @@ export default class FailTriesView extends AbstractView {
   bind() {
     this.element.querySelector(`.result__replay`).addEventListener(`click`, (event) => {
       event.preventDefault();
-      this.restart();
+      Application.showGame();
     });
-  }
-
-  restart() {
-    //
   }
 }
