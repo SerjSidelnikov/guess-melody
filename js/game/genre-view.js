@@ -16,7 +16,7 @@ export default class GenreView extends AbstractView {
                 <div class="track">
                   <button class="track__button track__button--play" type="button"></button>
                   <div class="track__status">
-                    <audio src="${question.src}"></audio>
+                    <audio src="${question.src}" preload="metadata"></audio>
                   </div>
                   <div class="game__answer">
                     <input class="game__input visually-hidden" type="checkbox" name="answer" value="${question.genre}" id="answer-${it}">

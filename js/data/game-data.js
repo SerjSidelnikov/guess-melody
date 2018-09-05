@@ -4,6 +4,14 @@ export const INITIAL_GAME = Object.freeze({
   time: 300
 });
 
+export const tick = (game) => {
+  const time = game.time - 1;
+
+  return Object.assign({}, game, {
+    time
+  });
+};
+
 export const statistics = [];
 export const user = new Set();
 
