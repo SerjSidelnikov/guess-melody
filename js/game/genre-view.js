@@ -10,16 +10,16 @@ export default class GenreView extends AbstractView {
     return `
       <section class="game game--genre">
         <section class="game__screen">
-          <h2 class="game__title">${this.level.title}</h2>
+          <h2 class="game__title">${this.level.question}</h2>
           <form class="game__tracks">
-             ${this.level.questions.map((question, it) => `
+             ${this.level.answers.map((answer, it) => `
                 <div class="track">
                   <button class="track__button track__button--play" type="button"></button>
                   <div class="track__status">
-                    <audio src="${question.src}" preload="metadata"></audio>
+                    <audio src="${answer.src}" preload="metadata"></audio>
                   </div>
                   <div class="game__answer">
-                    <input class="game__input visually-hidden" type="checkbox" name="answer" value="${question.genre}" id="answer-${it}">
+                    <input class="game__input visually-hidden" type="checkbox" name="answer" value="${answer.genre}" id="answer-${it}">
                     <label class="game__check" for="answer-${it}">Отметить</label>
                   </div>
                 </div>`.trim()).join(``)}

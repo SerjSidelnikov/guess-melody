@@ -3,26 +3,39 @@ import GenreView from './genre-view';
 import ArtistView from './artist-view';
 import ModalResetView from './modal-confirm-view';
 import Application from '../application';
-import {user} from '../data/game-data';
+import {user, QuestionType} from '../data/game-data';
 import {countPoints} from '../data/count-points';
 
 export default class GameScreen {
   constructor(model) {
     this.model = model;
-    this.header = new HeaderView(this.model.state);
-    this.level = new GenreView(this.model.levelGame);
-    this.modalReset = new ModalResetView();
+    this._interval = null;
+    this.init();
+  }
 
+  init() {
+    this.header = new HeaderView(this.model.state);
+    this.modalReset = new ModalResetView();
+    this.gameLevel(this.model.levelGame);
     this.root = document.createElement(`div`);
     this.root.appendChild(this.level.element);
     this.root.appendChild(this.modalReset.element);
     this.level.element.firstElementChild.insertBefore(this.header.element, this.level.element.firstElementChild.firstElementChild);
-
-    this._interval = null;
   }
 
   get element() {
     return this.root;
+  }
+
+  gameLevel(level) {
+    switch (level.type) {
+      case QuestionType.GENRE:
+        this.level = new GenreView(level);
+        break;
+      case QuestionType.ARTIST:
+        this.level = new ArtistView(level);
+        break;
+    }
   }
 
   startGame() {
@@ -91,7 +104,7 @@ export default class GameScreen {
     this.stopTimer();
 
     const userAnswers = answer.filter((it) => it.checked);
-    const answerIsCorrect = userAnswers.some((it) => it.value !== this.model.levelGame.answer);
+    const answerIsCorrect = userAnswers.some((it) => it.value !== this.model.levelGame.genre);
 
     if (answerIsCorrect) {
       try {
@@ -106,7 +119,7 @@ export default class GameScreen {
     }
 
     this.model.nextLevel();
-    this.level = new ArtistView(this.model.levelGame);
+    this.gameLevel(this.model.levelGame);
     this.changeLevel(this.level);
     this.updateHeader();
     this.startTimer();
@@ -115,7 +128,7 @@ export default class GameScreen {
   answerArtist(answer) {
     this.stopTimer();
 
-    if (answer.value !== this.model.levelGame.question.name) {
+    if (!answer.value) {
       try {
         this.model.die();
         user.add({result: false, time: this.model.state.time});
@@ -129,7 +142,7 @@ export default class GameScreen {
 
     if (this.model.hasNextLevel()) {
       this.model.nextLevel();
-      this.level = new GenreView(this.model.levelGame);
+      this.gameLevel(this.model.levelGame);
       this.changeLevel(this.level);
       this.updateHeader();
       this.startTimer();

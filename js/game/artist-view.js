@@ -10,19 +10,19 @@ export default class ArtistView extends AbstractView {
     return `
       <section class="game game--artist">
         <section class="game__screen">
-          <h2 class="game__title">${this.level.title}</h2>
+          <h2 class="game__title">${this.level.question}</h2>
           <div class="game__track">
             <button class="track__button track__button--play track__button--pause" type="button"></button>
-            <audio src="${this.level.question.src}" autoplay></audio>
+            <audio src="${this.level.src}" autoplay></audio>
           </div>
       
           <form class="game__artist">
             ${this.level.answers.map((answer, it) => `
               <div class="artist">
-                <input class="artist__input visually-hidden" type="radio" name="answer" value="${answer.name}" id="answer-${it}">
+                <input class="artist__input visually-hidden" type="radio" name="answer" value="${answer.isCorrect}" id="answer-${it}">
                 <label class="artist__name" for="answer-${it}">
-                  <img class="artist__picture" src="${answer.image}" alt="${answer.name}">
-                  ${answer.name}
+                  <img class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
+                  ${answer.title}
                 </label>
               </div>`.trim()).join(``)}
           </form>

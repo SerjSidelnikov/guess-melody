@@ -1,15 +1,16 @@
 import AbstractView from '../abstract-view';
 
 export default class ModalErrorView extends AbstractView {
-  constructor() {
+  constructor(status) {
     super();
+    this.status = status;
   }
 
-  get element() {
+  get template() {
     return `
       <section class="modal">
         <h2 class="modal__title">Произошла ошибка!</h2>
-        <p class="modal__text">Статус: 404. Пожалуйста, перезагрузите страницу.</p>
+        <p class="modal__text">Статус: ${this.status}. Пожалуйста, перезагрузите страницу.</p>
       </section>`;
   }
 
