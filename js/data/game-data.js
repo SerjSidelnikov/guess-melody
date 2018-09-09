@@ -12,7 +12,6 @@ export const tick = (game) => {
   });
 };
 
-export const statistics = [];
 export const user = new Set();
 
 export const canContinue = (game) => game.lives - 1 > 0;

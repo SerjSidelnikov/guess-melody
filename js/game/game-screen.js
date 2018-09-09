@@ -118,11 +118,7 @@ export default class GameScreen {
       user.add({result: true, time: this.model.state.time});
     }
 
-    this.model.nextLevel();
-    this.gameLevel(this.model.levelGame);
-    this.changeLevel(this.level);
-    this.updateHeader();
-    this.startTimer();
+    this.hasNextLevel();
   }
 
   answerArtist(answer) {
@@ -140,6 +136,10 @@ export default class GameScreen {
       user.add({result: true, time: this.model.state.time});
     }
 
+    this.hasNextLevel();
+  }
+
+  hasNextLevel() {
     if (this.model.hasNextLevel()) {
       this.model.nextLevel();
       this.gameLevel(this.model.levelGame);
@@ -147,7 +147,7 @@ export default class GameScreen {
       this.updateHeader();
       this.startTimer();
     } else {
-      this.model.result = {
+      this.model.gameUser = {
         score: countPoints([...user], this.model.state.lives),
         lives: this.model.state.lives,
         time: this.model.state.time,

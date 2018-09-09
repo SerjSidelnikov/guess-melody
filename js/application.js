@@ -6,26 +6,19 @@ import FailTimeView from './game/fail-time-view';
 import FailTriesView from './game/fail-tries-view';
 import ResultGameView from './game/result-success-view';
 import ModalError from './game/modal-error-view';
-
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
+import SplashScreen from './game/splash-screen';
+import Loader from './game/loader';
 
 let gameLevels;
 
 export default class Application {
 
   static start() {
-    window.fetch(`https://es.dump.academy/guess-melody/questions`)
-      .then(checkStatus)
-      .then((response) => response.json())
+    const splash = new SplashScreen();
+    showScreen(splash.element);
+    Loader.loadData()
       .then((data) => {
         gameLevels = data;
-        return gameLevels;
       })
       .then(Application.showWelcome)
       .catch(Application.showError);
@@ -53,8 +46,12 @@ export default class Application {
   }
 
   static showResult(model) {
-    const resultGame = new ResultGameView(model);
-    showScreen(resultGame.element);
+    const splash = new SplashScreen();
+    showScreen(splash.element);
+    Loader.saveResults(model.dataGame)
+      .then(() => Loader.loadResults())
+      .then((data) => showScreen(new ResultGameView(model.getEndGame(data)).element))
+      .catch(Application.showError);
   }
 
   static showError(error) {
