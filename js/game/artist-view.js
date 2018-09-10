@@ -41,7 +41,7 @@ export default class ArtistView extends AbstractView {
       btnPlayMusic.classList.toggle(`track__button--pause`);
 
       if (btnPlayMusic.classList.contains(`track__button--pause`)) {
-        audio.play().catch((error) => error);
+        audio.play().catch(() => ({}));
       } else {
         audio.pause();
       }

@@ -103,10 +103,12 @@ export default class GameScreen {
   answerGenre(answer) {
     this.stopTimer();
 
+    const countCorrectAnswers = this.model.levelGame.answers.filter((it) => it.genre === this.model.levelGame.genre);
     const userAnswers = answer.filter((it) => it.checked);
-    const answerIsCorrect = userAnswers.some((it) => it.value !== this.model.levelGame.genre);
+    const answerIsFalse = userAnswers.some((it) => it.value !== this.model.levelGame.genre);
+    const answerIsCorrect = userAnswers.filter((it) => it.value === this.model.levelGame.genre);
 
-    if (answerIsCorrect) {
+    if (answerIsFalse || countCorrectAnswers.length !== answerIsCorrect.length) {
       try {
         this.model.die();
         user.add({result: false, time: this.model.state.time});
@@ -124,7 +126,7 @@ export default class GameScreen {
   answerArtist(answer) {
     this.stopTimer();
 
-    if (!answer.value) {
+    if (answer.value === `false`) {
       try {
         this.model.die();
         user.add({result: false, time: this.model.state.time});
