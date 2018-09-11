@@ -37,7 +37,7 @@ export default class GenreView extends AbstractView {
     const buttonsPlayMusic = [...form.querySelectorAll(`.track__button`)];
     const musics = [...form.querySelectorAll(`audio`)];
     buttonsPlayMusic[0].classList.add(`track__button--pause`);
-    musics[0].play();
+    musics[0].play().catch(() => ({}));
 
     buttonsPlayMusic.forEach((btn, index) => {
       btn.addEventListener(`click`, (event) => {
@@ -53,7 +53,7 @@ export default class GenreView extends AbstractView {
           });
 
           btn.classList.add(`track__button--pause`);
-          musics[index].play();
+          musics[index].play().catch(() => ({}));
         }
       });
     });
