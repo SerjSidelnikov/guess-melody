@@ -8,7 +8,7 @@ export default class SplashScreen extends AbstractView {
   get template() {
     return `
       <div>
-        <img src="../img/ajax-loader.gif" alt="загрузка" width="140" height="140">
+        <img class="splash-screen" src="./img/ajax-loader.gif" alt="загрузка" width="140" height="140">
       </div>`;
   }
 
