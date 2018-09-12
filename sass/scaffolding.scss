@@ -132,6 +132,10 @@ img {
   }
 }
 
+.splash-screen {
+  transform: translateY(70px);
+}
+
 @keyframes bounce {
   0% {
     transform: translateY(-2000px);

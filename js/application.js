@@ -13,15 +13,15 @@ let gameLevels;
 
 export default class Application {
 
-  static start() {
+  static async start() {
     const splash = new SplashScreen();
     showScreen(splash.element);
-    Loader.loadData()
-      .then((data) => {
-        gameLevels = data;
-      })
-      .then(Application.showWelcome)
-      .catch(Application.showError);
+    try {
+      gameLevels = await Loader.loadData();
+      Application.showWelcome();
+    } catch (e) {
+      Application.showError();
+    }
   }
 
   static showWelcome() {
@@ -45,13 +45,16 @@ export default class Application {
     showScreen(failTries.element);
   }
 
-  static showResult(model) {
+  static async showResult(model) {
     const splash = new SplashScreen();
     showScreen(splash.element);
-    Loader.saveResults(model.dataGame)
-      .then(() => Loader.loadResults())
-      .then((data) => showScreen(new ResultGameView(model.getEndGame(data)).element))
-      .catch(Application.showError);
+    try {
+      await Loader.saveResults(model.dataGame);
+      const data = await Loader.loadResults();
+      showScreen(new ResultGameView(model.getEndGame(data)).element);
+    } catch (e) {
+      Application.showError();
+    }
   }
 
   static showError(error) {
