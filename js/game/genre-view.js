@@ -74,7 +74,7 @@ export default class GenreView extends AbstractView {
     });
   }
 
-  checkAnswer(answers) {
+  checkAnswer() {
     //
   }
 }

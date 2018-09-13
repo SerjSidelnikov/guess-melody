@@ -58,7 +58,7 @@ export default class ArtistView extends AbstractView {
     }
   }
 
-  checkAnswer(answer) {
+  checkAnswer() {
     //
   }
 }
