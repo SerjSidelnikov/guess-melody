@@ -24,7 +24,7 @@ export const countPoints = (answersUsers, lives) => {
   const BEST_TIME = 30;
   let points = 0;
 
-  for (let answer of answersUsers) {
+  for (const answer of answersUsers) {
     if (answer.result && answer.time >= BEST_TIME) {
       points += 1;
     } else if (answer.result && answer.time < BEST_TIME) {

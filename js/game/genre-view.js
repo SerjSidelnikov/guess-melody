@@ -1,4 +1,5 @@
 import AbstractView from '../abstract-view';
+import {DEBUG} from '../data/game-data';
 
 export default class GenreView extends AbstractView {
   constructor(level) {
@@ -20,9 +21,12 @@ export default class GenreView extends AbstractView {
                   </div>
                   <div class="game__answer">
                     <input class="game__input visually-hidden" type="checkbox" name="answer" value="${answer.genre}" id="answer-${it}">
-                    <label class="game__check" for="answer-${it}">Отметить</label>
+                    <label 
+                      class="game__check"
+                      for="answer-${it}"
+                      ${DEBUG && this.level.genre === answer.genre ? `style="border: 1px solid red;"` : ``}>Отметить</label>
                   </div>
-                </div>`.trim()).join(``)}
+                </div>`).join(``)}
       
             <button class="game__submit button" type="submit" disabled>Ответить</button>
           </form>
