@@ -27,17 +27,6 @@ export default class GameScreen {
     return this.root;
   }
 
-  gameLevel(level) {
-    switch (level.type) {
-      case QuestionType.GENRE:
-        this.level = new GenreView(level);
-        break;
-      case QuestionType.ARTIST:
-        this.level = new ArtistView(level);
-        break;
-    }
-  }
-
   startGame() {
     this.restart();
     this.changeLevel(this.level);
@@ -64,6 +53,35 @@ export default class GameScreen {
   endGame() {
     this.restart();
     Application.showFailTime();
+  }
+
+  gameLevel(level) {
+    switch (level.type) {
+      case QuestionType.GENRE:
+        this.level = new GenreView(level);
+        break;
+      case QuestionType.ARTIST:
+        this.level = new ArtistView(level);
+        break;
+    }
+  }
+
+  hasNextLevel() {
+    if (this.model.hasNextLevel()) {
+      this.model.nextLevel();
+      this.gameLevel(this.model.levelGame);
+      this.changeLevel(this.level);
+      this.updateHeader();
+      this.startTimer();
+    } else {
+      this.model.gameUser = {
+        score: countPoints([...user], this.model.state.lives),
+        lives: this.model.state.lives,
+        time: this.model.state.time,
+      };
+
+      Application.showResult(this.model);
+    }
   }
 
   confirm() {
@@ -116,10 +134,9 @@ export default class GameScreen {
         Application.showFailTries();
         return;
       }
-    } else {
-      user.add({result: true, time: this.model.state.time});
     }
 
+    user.add({result: true, time: this.model.state.time});
     this.hasNextLevel();
   }
 
@@ -134,29 +151,10 @@ export default class GameScreen {
         Application.showFailTries();
         return;
       }
-    } else {
-      user.add({result: true, time: this.model.state.time});
     }
 
+    user.add({result: true, time: this.model.state.time});
     this.hasNextLevel();
-  }
-
-  hasNextLevel() {
-    if (this.model.hasNextLevel()) {
-      this.model.nextLevel();
-      this.gameLevel(this.model.levelGame);
-      this.changeLevel(this.level);
-      this.updateHeader();
-      this.startTimer();
-    } else {
-      this.model.gameUser = {
-        score: countPoints([...user], this.model.state.lives),
-        lives: this.model.state.lives,
-        time: this.model.state.time,
-      };
-
-      Application.showResult(this.model);
-    }
   }
 
   changeContentView(view) {

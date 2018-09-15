@@ -10,16 +10,27 @@ export default class GameModel {
     this._state = Object.assign({}, INITIAL_GAME);
   }
 
-  get state() {
-    return this._state;
-  }
-
   set gameUser(user) {
     this._game = user;
   }
 
+  get state() {
+    return this._state;
+  }
+
   get gameUser() {
     return this._game;
+  }
+
+  get levelGame() {
+    return this.data[this._state.level];
+  }
+
+  get dataGame() {
+    return {
+      time: FULL_TIME - this._state.time,
+      score: this.gameUser.score,
+    };
   }
 
   getEndGame(data) {
@@ -29,13 +40,6 @@ export default class GameModel {
       time: FULL_TIME - this._state.time,
       lives: this._state.lives,
       text: resultGame(statistics, this.gameUser),
-    };
-  }
-
-  get dataGame() {
-    return {
-      time: FULL_TIME - this._state.time,
-      score: this.gameUser.score,
     };
   }
 
@@ -49,10 +53,6 @@ export default class GameModel {
 
   nextLevel() {
     this._state = changeLevel(this.state, this._state.level + 1);
-  }
-
-  get levelGame() {
-    return this.data[this._state.level];
   }
 
   die() {

@@ -12,7 +12,7 @@ export const tick = (game) => {
   });
 };
 
-export const DEBUG = true;
+export const DEBUG = false;
 
 export const user = new Set();
 
